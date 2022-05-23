@@ -63,16 +63,18 @@ class WineDataset(Dataset):
     def __len__(self):
         return self.n_samples
 
+
 # Custom Transforms
-# implement __call__(self, sample)
-class ToTensor:
-    # Convert ndarrays to Tensors
-    def __call__(self, sample):
+# --> MUST implement __call__(self, sample)
+
+class ToTensor:     # Convert ndarrays to Tensors
+
+    def __call__(self, sample):     # --> callable object, i.e. ToTensor() --> call its __call__ method
         inputs, targets = sample
         return torch.from_numpy(inputs), torch.from_numpy(targets)
 
-class MulTransform:
-    # multiply inputs with a given factor
+class MulTransform:     # multiply inputs with a given factor
+
     def __init__(self, factor):
         self.factor = factor
 
@@ -81,12 +83,12 @@ class MulTransform:
         inputs *= self.factor
         return inputs, targets
 
-print('Without Transform')
-dataset = WineDataset()
-first_data = dataset[0]
-features, labels = first_data
-print(type(features), type(labels))
-print(features, labels)
+# print('Without Transform')
+# dataset = WineDataset()
+# first_data = dataset[0]
+# features, labels = first_data
+# print(type(features), type(labels))
+# print(features, labels)
 
 print('\nWith Tensor Transform')
 dataset = WineDataset(transform=ToTensor())
@@ -96,9 +98,11 @@ print(type(features), type(labels))
 print(features, labels)
 
 print('\nWith Tensor and Multiplication Transform')
-composed = torchvision.transforms.Compose([ToTensor(), MulTransform(4)])
+composed = torchvision.transforms.Compose([ToTensor(), MulTransform(2)])
 dataset = WineDataset(transform=composed)
 first_data = dataset[0]
 features, labels = first_data
 print(type(features), type(labels))
-print(features, labels)
+print(features, labels)     # features will be doubled
+
+

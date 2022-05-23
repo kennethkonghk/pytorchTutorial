@@ -52,12 +52,13 @@ imshow(torchvision.utils.make_grid(images))
 
 class ConvNet(nn.Module):
     def __init__(self):
-        super(ConvNet, self).__init__()
+        # super(ConvNet, self).__init__()
+        super().__init__()
         self.conv1 = nn.Conv2d(3, 6, 5)
         self.pool = nn.MaxPool2d(2, 2)
         self.conv2 = nn.Conv2d(6, 16, 5)
-        self.fc1 = nn.Linear(16 * 5 * 5, 120)
-        self.fc2 = nn.Linear(120, 84)
+        self.fc1 = nn.Linear(16 * 5 * 5, 120)   # 2nd param can be another value
+        self.fc2 = nn.Linear(120, 84)   # 2nd param can be another value
         self.fc3 = nn.Linear(84, 10)
 
     def forward(self, x):
@@ -108,6 +109,7 @@ with torch.no_grad():
     for images, labels in test_loader:
         images = images.to(device)
         labels = labels.to(device)
+
         outputs = model(images)
         # max returns (value ,index)
         _, predicted = torch.max(outputs, 1)
@@ -127,4 +129,5 @@ with torch.no_grad():
     for i in range(10):
         acc = 100.0 * n_class_correct[i] / n_class_samples[i]
         print(f'Accuracy of {classes[i]}: {acc} %')
+
 
